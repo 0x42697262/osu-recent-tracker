@@ -11,16 +11,30 @@ return new class extends Migration
      */
     public function up(): void
     {
+
+        Schema::create('beatmapsets', function (Blueprint $table) {
+            $table->unsignedBigInteger('id')->primary();
+
+            $table->string('artist');
+            $table->string('artist_unicode', 128);
+            $table->string('creator', 32);
+            $table->string('title', 128);
+            $table->string('title_unicode', 128);
+            $table->unsignedBigInteger('user_id');
+
+            $table->timestamps();
+        });
+
         Schema::create('beatmaps', function (Blueprint $table) {
             $table->unsignedBigInteger('id')->primary();
 
             // Basic metadata
             $table->unsignedBigInteger('beatmapset_id');
             $table->decimal('difficulty_rating', 5, 2);
-            $table->unsignedBigInteger('user_id')->index();
+            $table->unsignedBigInteger('user_id');
             $table->string('status', 16); // ranked, qualified, etc.
             $table->unsignedInteger('total_length');
-            $table->string('version', 64);
+            $table->string('version', 128);
             $table->string('checksum', 32);
 
             // Optional gameplay parameters
