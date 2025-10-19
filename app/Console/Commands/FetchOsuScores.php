@@ -6,6 +6,8 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
+use App\Models\Player;
+
 /**
  *
  * Make sure to add a cron job for this command.
@@ -36,9 +38,10 @@ class FetchOsuScores extends Command
      */
     public function handle()
     {
-        //
-        $this->info('Fetching latest osu! scores...');
-        Log::info('Started osu:fetch-osu-scores command.');
+        $players = Player::all();
+
+        $this->info('Fetching latest osu! scores for ' . count($players) . ' players...');
+        Log::info('Started osu:fetch-osu-scores command for '. count($players) . ' players.');
 
         /**
         * Maximum number of score results (max: 20).
@@ -53,33 +56,37 @@ class FetchOsuScores extends Command
         */
         $offset = 0;
 
-        $user_id = 23131365;
+        foreach ($players as $player)
+        {
+            $user_id = $player->id;
+            $username = $player->username;
 
-        $response = Http::withHeaders([
-            'Content-Type' => 'application/json',
-            'Accept' => 'application/json',
-        ])->withToken(env('OSU_API_V2_ACCESS_TOKEN'))
-          ->get("https://osu.ppy.sh/api/v2/users/{$user_id}/scores/recent", [
-              'legacy_only' => 0,
-              'include_fails' => 1,
-              'mode' => 'osu',
-              'limit' => $limit,
-              'offset' => $offset,
-          ]);
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ])->withToken(env('OSU_API_V2_ACCESS_TOKEN'))
+            ->get("https://osu.ppy.sh/api/v2/users/{$user_id}/scores/recent", [
+                'legacy_only' => 0,
+                'include_fails' => 1,
+                'mode' => 'osu',
+                'limit' => $limit,
+                'offset' => $offset,
+            ]);
 
 
-        if (!$response->successful()) {
-            $error = 'Failed to fetch player recent scores: ' . $response->body();
-            $this->error($error);
-            Log::error($error);
+            if (!$response->successful()) {
+                $error = 'Failed to fetch player '. $username . ' recent scores: ' . $response->body();
+                $this->error($error);
+                Log::error($error);
 
-            return Command::FAILURE;
+                return Command::FAILURE;
+            }
+
+            $scores = $response->json();
+            $success = 'Fetched ' . count($scores) . ' scores for ' . $username;
+            $this->info($success);
+            Log::info($success);
+            $this->info(json_encode($scores, JSON_PRETTY_PRINT));
         }
-
-        $scores = $response->json();
-        $success = 'Fetched ' . count($scores) . ' scores successfully.';
-        $this->info($success);
-        Log::info($success);
-        $this->info(json_encode($scores, JSON_PRETTY_PRINT));
     }
 }
