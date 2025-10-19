@@ -50,6 +50,13 @@ return new class extends Migration
 
             $table->timestamp('last_updated');
             $table->timestamps();
+
+
+            $table
+                ->foreign('beatmapset_id')
+                ->references('id')
+                ->on('beatmapsets')
+                ->onDelete('cascade');
         });
     }
 
