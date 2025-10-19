@@ -52,7 +52,7 @@ return new class extends Migration
             // core score stats
             $table->decimal('accuracy', 18, 16);
             $table->unsignedInteger('max_combo');
-            $table->unsignedBigInteger('enabled_mods')->default(0);
+            $table->json('mods')->default(json_encode([]));
             $table->boolean('passed')->default(false);
             $table->boolean('perfect')->default(false);
             $table->decimal('pp', 8, 3);
@@ -68,13 +68,13 @@ return new class extends Migration
             $table->unsignedInteger('count_miss');
 
             // canonical event time (when score was created/submitted)
-            $table->dateTime('score_time')->index();
+            $table->dateTime('submission_date')->index();
 
             $table->timestamps();
 
             // uniqueness and indexes
             $table->unique('record_hash', 'ux_scores_record_hash');
-            $table->index(['user_id', 'score_time'], 'idx_user_scoretime');
+            $table->index(['user_id', 'submission_date'], 'idx_user_submissiondate');
 
             $table
                 ->foreign('user_id')
