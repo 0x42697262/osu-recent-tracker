@@ -8,13 +8,6 @@ use Illuminate\Support\Facades\Log;
 
 use App\Models\Player;
 
-/**
- *
- * Make sure to add a cron job for this command.
- *  *\/2 * * * * php /path/to/osu-pretend/artisan osu:fetch-osu-scores >> /dev/null 2>&1
- * This runs the cron job every 2 minutes.
- * Remove the trailing \.
- */
 
 class FetchOsuScores extends Command
 {
@@ -51,6 +44,21 @@ class FetchOsuScores extends Command
         $limit = 100;
 
         // Check for authentication so that we don't waste peppy's cpu
+        $auth_resp = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+        ])->withToken(env('OSU_API_V2_ACCESS_TOKEN'))->get("https://osu.ppy.sh/api/v2/");
+
+        $json = $auth_resp->json();
+
+        if (isset($json['authentication']) && $json['authentication'] === 'basic')
+        {
+            $error = "Authentication failed: osu! API token is invalid or expired.";
+            $this->error($error);
+            Log::error($error);
+
+            return Command::FAILURE;
+        }
 
 
         foreach ($players as $player)
