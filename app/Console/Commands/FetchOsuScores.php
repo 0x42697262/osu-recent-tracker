@@ -96,7 +96,10 @@ class FetchOsuScores extends Command
 
             if (empty($scores))
             {
-                Log::info($username . ' has no recent plays.');
+                $msg = $username . ' has no recent plays.';
+                $this->info($msg);
+                Log::info($msg);
+
                 continue;
             }
 
@@ -106,30 +109,6 @@ class FetchOsuScores extends Command
 
 
                 $beatmapId = $score['beatmap']['id'];
-
-                Score::create([
-                    'user_id' => $score['user_id'],
-                    'beatmap_id' => $beatmapId,
-                    'score_id' => $score['id'],
-                    'record_hash' => $recordHash,
-                    'accuracy' => $score['accuracy'],
-                    'max_combo' => $score['max_combo'],
-                    'mods' => $score['mods'],
-                    'passed' => $score['passed'] ? 1 : 0,
-                    'perfect' => $score['perfect'] ? 1 : 0,
-                    'pp' => $score['pp'] ?? 0,
-                    'rank' => $score['rank'],
-                    'score' => $score['score'],
-                    'count_100' => $score['statistics']['count_100'] ?? 0,
-                    'count_300' => $score['statistics']['count_300'] ?? 0,
-                    'count_50' => $score['statistics']['count_50'] ?? 0,
-                    'count_geki' => $score['statistics']['count_geki'] ?? 0,
-                    'count_katu' => $score['statistics']['count_katu'] ?? 0,
-                    'count_miss' => $score['statistics']['count_miss'] ?? 0,
-                    'submission_date' => Carbon::parse($score['created_at'])->format('Y-m-d H:i:s'),
-                ]);
-
-                $count++;
 
                 $existingBeatmap = Beatmap::find($beatmapId);
 
@@ -158,6 +137,22 @@ class FetchOsuScores extends Command
 
                 if (!$existingBeatmap)
                 {
+
+                    if (Beatmapset::where('id', $beatmapsetId)->exists()){
+                        continue;
+                    }
+
+                    $beatmapsetData = $score['beatmapset'];
+                    Beatmapset::create([
+                        'id' => $beatmapsetId,
+                        'artist' => $beatmapsetData['artist'],
+                        'artist_unicode' => $beatmapsetData['artist_unicode'],
+                        'creator' => $beatmapsetData['creator'],
+                        'title' => $beatmapsetData['title'],
+                        'title_unicode' => $beatmapsetData['title_unicode'],
+                        'user_id' => $beatmapsetData['user_id'],
+                    ]);
+                    Log::info('Added new song ' . $beatmapsetData['title'] . ' with ID: ' . $beatmapsetId);
                     Beatmap::create($beatmapDataQuery);
                 }
                 else
@@ -169,22 +164,29 @@ class FetchOsuScores extends Command
                     }
                 }
 
-
-                if (Beatmapset::where('id', $beatmapsetId)->exists()){
-                    continue;
-                }
-
-                $beatmapsetData = $score['beatmapset'];
-                Beatmapset::create([
-                    'id' => $beatmapsetId,
-                    'artist' => $beatmapsetData['artist'],
-                    'artist_unicode' => $beatmapsetData['artist_unicode'],
-                    'creator' => $beatmapsetData['creator'],
-                    'title' => $beatmapsetData['title'],
-                    'title_unicode' => $beatmapsetData['title_unicode'],
-                    'user_id' => $beatmapsetData['user_id'],
+                Score::create([
+                    'user_id' => $score['user_id'],
+                    'beatmap_id' => $beatmapId,
+                    'score_id' => $score['id'],
+                    'record_hash' => $recordHash,
+                    'accuracy' => $score['accuracy'],
+                    'max_combo' => $score['max_combo'],
+                    'mods' => $score['mods'],
+                    'passed' => $score['passed'] ? 1 : 0,
+                    'perfect' => $score['perfect'] ? 1 : 0,
+                    'pp' => $score['pp'] ?? 0,
+                    'rank' => $score['rank'],
+                    'score' => $score['score'],
+                    'count_100' => $score['statistics']['count_100'] ?? 0,
+                    'count_300' => $score['statistics']['count_300'] ?? 0,
+                    'count_50' => $score['statistics']['count_50'] ?? 0,
+                    'count_geki' => $score['statistics']['count_geki'] ?? 0,
+                    'count_katu' => $score['statistics']['count_katu'] ?? 0,
+                    'count_miss' => $score['statistics']['count_miss'] ?? 0,
+                    'submission_date' => Carbon::parse($score['created_at'])->format('Y-m-d H:i:s'),
                 ]);
-                Log::info('Added new song ' . $beatmapsetData['title'] . ' with ID: ' . $beatmapsetId);
+
+                $count++;
             }
 
             $success = 'Fetched ' . count($scores) . ' scores for ' . $username ;

@@ -18,6 +18,7 @@ class Beatmapset extends Model
     protected $fillable = [
         'id',
         'artist',
+        'artist_unicode',
         'creator',
         'title',
         'title_unicode',
