@@ -20,7 +20,6 @@ class Beatmap extends Model
         'beatmapset_id',
         'difficulty_rating',
         'user_id',
-        'status',
         'total_length',
         'version',
         'checksum',

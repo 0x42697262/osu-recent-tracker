@@ -22,7 +22,7 @@ class Score extends Model
         'score_id',
         'accuracy',
         'max_combo',
-        'enabled_mods',
+        'mods',
         'passed',
         'perfect',
         'pp',
@@ -34,10 +34,14 @@ class Score extends Model
         'count_geki',
         'count_katu',
         'count_miss',
-        'score_time',
+        'submission_date',
     ];
 
     public $timestamp = true;
+
+    protected $casts = [
+        'mods' => 'array',
+    ];
 
     public function player()
     {
