@@ -6,6 +6,14 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
+/**
+ *
+ * Make sure to add a cron job for this command.
+ *  *\/2 * * * * php /path/to/osu-pretend/artisan osu:fetch-osu-scores >> /dev/null 2>&1
+ * This runs the cron job every 2 minutes.
+ * Remove the trailing \.
+ */
+
 class FetchOsuScores extends Command
 {
     /**
