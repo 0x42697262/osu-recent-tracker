@@ -157,7 +157,7 @@ class FetchOsuScores extends Command
                 }
                 else
                 {
-                    $beatmapLastUpdated = $existingBeatmap->last_updated;
+                    $beatmapLastUpdated = Carbon::parse($existingBeatmap->last_updated);
                     if ($beatmapLastUpdated->gt(Carbon::parse($beatmapData['last_updated'])))
                     {
                         Beatmap->update($beatmapDataQuery);
@@ -189,7 +189,7 @@ class FetchOsuScores extends Command
                 $count++;
             }
 
-            $success = 'Fetched ' . count($scores) . ' scores for ' . $username ;
+            $success = 'Fetched ' . $count . ' scores for ' . $username ;
             $this->info($success);
             Log::info($success);
             /* $this->info(json_encode($scores, JSON_PRETTY_PRINT)); */
