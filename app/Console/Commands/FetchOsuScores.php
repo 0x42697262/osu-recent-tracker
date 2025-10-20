@@ -104,8 +104,6 @@ class FetchOsuScores extends Command
                 continue;
             }
 
-            $last_tracked_score = Carbon::parse('2000-10-19T10:06:39Z')->format('Y-m-d H:i:s');
-
             foreach($scores as $score){
                 $recordHash = OsuHelpers::computeRecordHash($score);
                 if (Score::where('record_hash', $recordHash)->exists()) continue;
@@ -167,12 +165,11 @@ class FetchOsuScores extends Command
                     }
                 }
 
-                $last_tracked_score = Carbon::parse($score['ended_at'])->format('Y-m-d H:i:s');
                 Score::create([
                     'record_hash'           => $recordHash,
                     'user_id'               => $score['user_id'],
                     'beatmap_id'            => $beatmapId,
-                    'ended_at'              => $last_tracked_score,
+                    'ended_at'              => Carbon::parse($score['ended_at'])->format('Y-m-d H:i:s'),
 
                     'pp'                    => $score['pp'],
                     'accuracy'              => $score['accuracy'],
@@ -201,7 +198,7 @@ class FetchOsuScores extends Command
             }
 
             $player->update([
-                'last_tracked_score' => $last_tracked_score,
+                'last_tracked_update' => now(),
             ]);
 
             $success = 'Fetched ' . $count . ' scores for ' . $username ;
