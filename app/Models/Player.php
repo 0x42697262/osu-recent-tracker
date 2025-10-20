@@ -21,6 +21,7 @@ class Player extends Model
     protected $fillable = [
         'id',
         'username',
+        'last_tracked_score'
     ];
 
     public $timestamps = true;

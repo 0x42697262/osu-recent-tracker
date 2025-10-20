@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('players', function (Blueprint $table) {
             $table->unsignedBigInteger('id')->primary();
             $table->string('username', 32)->index();
+            $table->dateTime('last_tracked_score')->default('1970-01-01 00:00:00')->index();
 
             $table->timestamps();
         });
