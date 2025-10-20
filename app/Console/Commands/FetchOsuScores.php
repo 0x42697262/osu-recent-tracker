@@ -125,7 +125,7 @@ class FetchOsuScores extends Command
             $count = 0;
             $scores = $response->json();
 
-            if (empty($scores))
+            if (!is_array($scores) || empty($scores))
             {
                 $player->update([
                     'last_tracked_update' => now(),
