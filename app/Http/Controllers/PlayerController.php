@@ -22,7 +22,6 @@ class PlayerController extends Controller
         $player = Player::with(['scores' => function($q){
             $q->orderByDesc('ended_at')->limit(100);
         }])->find($user_id);
-        $username = $player->username;
 
         if (!$player)
         {
@@ -30,11 +29,6 @@ class PlayerController extends Controller
                 'error' => 'Player not tracked.',
             ], 404);
         }
-
-        $scores = Score::where('user_id', $user_id)
-                    ->orderByDesc('ended_at')
-                    ->limit(100)
-                    ->get();
 
         return (new PlayerResource($player))->response();
     }
