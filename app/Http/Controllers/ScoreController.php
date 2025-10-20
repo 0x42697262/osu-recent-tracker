@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Validator;
 
 use App\Http\Resources\ScoreResource;
 use App\Models\Player;
@@ -11,11 +12,18 @@ use App\Models\Score;
 
 class ScoreController extends Controller
 {
-    public function history(Request $request, int $user_id): JsonResponse
+    public function history(Request $request, $user_id): JsonResponse
     {
+        $validated = Validator::make(['user_id' => $user_id], [
+            'user_id' => 'required|integer',
+        ]);
+
+        if ($validated->fails()) {
+            return response()->json(['error' => 'user_id must be an integer'], 400);
+        }
+
         $limit = min((int) $request->query('limit', 25), 100);
         $offset = (int) $request->query('offset', 0);
-
         $player = Player::find($user_id);
 
         if (!$player)
