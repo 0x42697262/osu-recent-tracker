@@ -16,25 +16,32 @@ class Score extends Model
     protected $keyType = 'int';
 
     protected $fillable = [
+        'record_hash',
         'user_id',
         'beatmap_id',
-        'record_hash',
-        'score_id',
-        'accuracy',
-        'max_combo',
-        'mods',
-        'passed',
-        'perfect',
+        'ended_at',
+
         'pp',
+        'accuracy',
+        'classic_total_score',
+        'total_score',
+        'legacy_total_score',
+        'max_combo',
+
         'rank',
-        'score',
-        'count_100',
-        'count_300',
-        'count_50',
-        'count_geki',
-        'count_katu',
-        'count_miss',
-        'submission_date',
+        'mods',
+        'is_perfect_combo',
+        'passed',
+        'has_replay',
+
+        'great',
+        'ok',
+        'meh',
+        'miss',
+        'ignore_hit',
+        'ignore_miss',
+        'large_tick_hit',
+        'slider_tail_hit',
     ];
 
     public $timestamp = true;

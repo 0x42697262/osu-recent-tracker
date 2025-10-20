@@ -11,12 +11,14 @@ class OsuHelpers
         $fields = [
             $score['user_id'],
             $score['beatmap']['id'],
-            $score['id'],
-            $score['accuracy'],
-            $score['created_at'],
-            $score['max_combo'],
+            $score['ended_at'],
             $score['rank'],
-            $score['score'],
+            $score['accuracy'],
+            $score['max_combo'],
+            $score['classic_total_score'],
+            $score['total_score'],
+            $score['legacy_total_score'],
+            json_encode($score['mods']),
         ];
 
         $hashInput = implode('|', array_map(fn($f) => (string) $f, $fields));

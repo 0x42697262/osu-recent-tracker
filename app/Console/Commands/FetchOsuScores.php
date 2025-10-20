@@ -75,6 +75,7 @@ class FetchOsuScores extends Command
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
                 'Accept-Encoding' => 'gzip, deflate, br', // no need to worry about 300kib json response, compresesd to ~16kib
+                'X-API-Version' => env('X_API_VERSION', '20251019'),
             ])->withToken(env('OSU_API_V2_ACCESS_TOKEN'))
             ->get("https://osu.ppy.sh/api/v2/users/{$user_id}/scores/recent", [
                 'legacy_only' => 0,
@@ -165,25 +166,32 @@ class FetchOsuScores extends Command
                 }
 
                 Score::create([
-                    'user_id' => $score['user_id'],
-                    'beatmap_id' => $beatmapId,
-                    'score_id' => $score['id'],
-                    'record_hash' => $recordHash,
-                    'accuracy' => $score['accuracy'],
-                    'max_combo' => $score['max_combo'],
-                    'mods' => $score['mods'],
-                    'passed' => $score['passed'] ? 1 : 0,
-                    'perfect' => $score['perfect'] ? 1 : 0,
-                    'pp' => $score['pp'] ?? 0,
-                    'rank' => $score['rank'],
-                    'score' => $score['score'],
-                    'count_100' => $score['statistics']['count_100'] ?? 0,
-                    'count_300' => $score['statistics']['count_300'] ?? 0,
-                    'count_50' => $score['statistics']['count_50'] ?? 0,
-                    'count_geki' => $score['statistics']['count_geki'] ?? 0,
-                    'count_katu' => $score['statistics']['count_katu'] ?? 0,
-                    'count_miss' => $score['statistics']['count_miss'] ?? 0,
-                    'submission_date' => Carbon::parse($score['created_at'])->format('Y-m-d H:i:s'),
+                    'record_hash'           => $recordHash,
+                    'user_id'               => $score['user_id'],
+                    'beatmap_id'            => $beatmapId,
+                    'ended_at'              => Carbon::parse($score['ended_at'])->format('Y-m-d H:i:s'),
+
+                    'pp'                    => $score['pp'],
+                    'accuracy'              => $score['accuracy'],
+                    'classic_total_score'   => $score['classic_total_score'],
+                    'total_score'           => $score['total_score'],
+                    'legacy_total_score'    => $score['legacy_total_score'],
+                    'max_combo'             => $score['max_combo'],
+
+                    'rank'                  => $score['rank'],
+                    'mods'                  => $score['mods'],
+                    'is_perfect_combo'      => $score['is_perfect_combo'],
+                    'passed'                => $score['passed'],
+                    'has_replay'            => $score['has_replay'],
+
+                    'great'                 => $score['great'] ?? 0,
+                    'ok'                    => $score['ok'] ?? 0,
+                    'meh'                   => $score['meh'] ?? 0,
+                    'miss'                  => $score['miss'] ?? 0,
+                    'ignore_hit'            => $score['ignore_hit'] ?? 0,
+                    'ignore_miss'           => $score['ignore_miss'] ?? 0,
+                    'large_tick_hit'        => $score['large_tick_hit'] ?? 0,
+                    'slider_tail_hit'       => $score['slider_tail_hit'] ?? 0,
                 ]);
 
                 $count++;
@@ -192,7 +200,6 @@ class FetchOsuScores extends Command
             $success = 'Fetched ' . $count . ' scores for ' . $username ;
             $this->info($success);
             Log::info($success);
-            /* $this->info(json_encode($scores, JSON_PRETTY_PRINT)); */
         }
     }
 }
