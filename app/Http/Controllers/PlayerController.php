@@ -19,7 +19,7 @@ class PlayerController extends Controller
 
     public function history(Request $request, int $user_id): JsonResponse
     {
-        $limit = (int) $request->query('limit', 25);
+        $limit = min((int) $request->query('limit', 25), 100);
         $offset = (int) $request->query('offset', 0);
 
         $player = Player::with([
