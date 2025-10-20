@@ -19,9 +19,10 @@ class PlayerController extends Controller
 
     public function history(int $user_id): JsonResponse
     {
-        $player = Player::with(['scores' => function($q){
-            $q->orderByDesc('ended_at')->limit(100);
-        }])->find($user_id);
+        $player = Player::with([
+            'scores' => function($q){ $q->orderByDesc('ended_at')->limit(100); },
+            'scores.beatmap'
+        ])->find($user_id);
 
         if (!$player)
         {

@@ -27,9 +27,9 @@ class Beatmapset extends Model
 
     public $timestamps = true;
 
-    public function beatmap()
+    public function beatmaps()
     {
-        return $this->hasMany(Beatmap::class, 'beatmapsets_id', 'id');
+        return $this->hasMany(Beatmap::class, 'beatmapset_id', 'id');
     }
 
 }

@@ -55,10 +55,10 @@ class Score extends Model
         'mods' => 'array',
     ];
 
-    public function player()
-    {
-        return $this->belongsTo(Player::class, 'user_id', 'id');
-    }
+    /* public function player() */
+    /* { */
+    /*     return $this->belongsTo(Player::class, 'user_id', 'id'); */
+    /* } */
 
     public function beatmap()
     {

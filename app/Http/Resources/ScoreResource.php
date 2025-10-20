@@ -15,7 +15,6 @@ class ScoreResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'beatmap_id'            => $this->beatmap_id,
             'ended_at'              => $this->ended_at,
             'pp'                    => $this->pp,
             'accuracy'              => $this->accuracy,
@@ -28,16 +27,24 @@ class ScoreResource extends JsonResource
             'is_perfect_combo'      => (bool) $this->is_perfect_combo,
             'passed'                => (bool) $this->passed,
             'has_replay'            => (bool) $this->has_replay,
-            'statistics'            => [
-                'great'             => $this->great,
-                'ok'                => $this->ok,
-                'meh'               => $this->meh,
-                'miss'              => $this->miss,
-                'ignore_hit'        => $this->ignore_hit,
-                'ignore_miss'       => $this->ignore_miss,
-                'large_tick_hit'    => $this->large_tick_hit,
-                'slider_tail_hit'   => $this->slider_tail_hit,
-            ],
+            'statistics'            => collect([
+                'great'                 => $this->great,
+                'ok'                    => $this->ok,
+                'meh'                   => $this->meh,
+                'miss'                  => $this->miss,
+                'ignore_hit'            => $this->ignore_hit,
+                'ignore_miss'           => $this->ignore_miss,
+                'large_tick_hit'        => $this->large_tick_hit,
+                'slider_tail_hit'       => $this->slider_tail_hit,
+            ])->reject(fn ($value) => $value == 0)->all(),
+            'maximum_statistics'    => collect([
+                'legacy_combo_increase' => $this->legacy_combo_increase,
+                'great'                 => $this->great,
+                'ignore_hit'            => $this->ignore_hit,
+                'large_tick_hit'        => $this->large_tick_hit,
+                'slider_tail_hit'       => $this->slider_tail_hit,
+            ])->reject(fn ($value) => $value == 0)->all(),
+            'beatmap'               => BeatmapResource::make($this->whenLoaded('beatmap')),
         ];
     }
 }
