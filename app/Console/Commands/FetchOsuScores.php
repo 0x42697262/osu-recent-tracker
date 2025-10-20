@@ -63,6 +63,11 @@ class FetchOsuScores extends Command
                         ->limit($this->batchSize)
                         ->get();
 
+        if (count($players) == 0)
+        {
+            return;
+        }
+
         $this->info('Fetching latest osu! scores for ' . count($players) . ' players...');
         Log::info('Started osu:fetch-osu-scores command for '. count($players) . ' players');
 
@@ -233,7 +238,7 @@ class FetchOsuScores extends Command
             $this->info($success);
             Log::info($success);
 
-            sleep($this->delaySeconds);
+            usleep($this->delaySeconds * 1_000_000);
         }
     }
 }
