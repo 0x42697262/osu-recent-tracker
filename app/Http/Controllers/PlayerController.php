@@ -17,11 +17,18 @@ class PlayerController extends Controller
         return response()->json($players);
     }
 
-    public function history(int $user_id): JsonResponse
+    public function history(Request $request, int $user_id): JsonResponse
     {
+        $limit = (int) $request->query('limit', 25);
+        $offset = (int) $request->query('offset', 0);
+
         $player = Player::with([
-            'scores' => function($q){ $q->orderByDesc('ended_at')->limit(100); },
-            'scores.beatmap'
+            'scores' => function($q) use($limit, $offset) {
+                $q->orderByDesc('ended_at')
+                  ->offset($offset)
+                  ->limit($limit)
+                  ->with('beatmap.beatmapset');
+            }
         ])->find($user_id);
 
         if (!$player)
