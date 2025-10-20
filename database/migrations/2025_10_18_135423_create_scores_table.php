@@ -11,64 +11,38 @@ return new class extends Migration
      */
     public function up(): void
     {
-        /**
-         *
-         * What we need:
-         *  player info
-         *  - `hash` for uniqueness, SHA-256 binary (32 bytes), checking if we got duplicate entries
-         *  - `user_id` player user id
-         *  - `username` player username
-         *  score stats
-         *  - `created_at` date of score submission
-         *  - `id` score id (failed scores are given with id only for lazer; some scores will get deleted)
-         *  - `accuracy`
-         *  - `max_combo`
-         *  - `mods`
-         *  - `passed`
-         *  - `perfect`
-         *  - `pp`
-         *  - `rank`
-         *  - `score`
-         *  - `count_100`
-         *  - `count_300`
-         *  - `count_50`
-         *  - `count_geki`
-         *  - `count_katu`
-         *  - `count_miss`
-         *  minimum beatmap info
-         *  - `beatmap_id`
-         *
-         *  then maybe create another table for beatmaps?
-         */
         Schema::create('scores', function (Blueprint $table) {
             $table->id();
 
+            $table->binary('record_hash');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('beatmap_id');
+            $table->dateTime('ended_at')->index();
 
-            $table->binary('record_hash');
-            $table->unsignedBigInteger('score_id');
-
-            // core score stats
+            // score
+            $table->decimal('pp', 8, 3)->nullable();
             $table->decimal('accuracy', 18, 16);
+            $table->unsignedBigInteger('classic_total_score');
+            $table->unsignedBigInteger('total_score');
+            $table->unsignedBigInteger('legacy_total_score');
             $table->unsignedInteger('max_combo');
-            $table->json('mods')->default(json_encode([]));
-            $table->boolean('passed')->default(false);
-            $table->boolean('perfect')->default(false);
-            $table->decimal('pp', 8, 3);
+
+            // identifiers
             $table->string('rank', 3);
-            $table->unsignedBigInteger('score');
+            $table->boolean('is_perfect_combo')->default(false);
+            $table->boolean('passed')->default(false);
+            $table->boolean('has_replay')->default(false);
 
             // statistics
-            $table->unsignedInteger('count_100');
-            $table->unsignedInteger('count_300');
-            $table->unsignedInteger('count_50');
-            $table->unsignedInteger('count_geki');
-            $table->unsignedInteger('count_katu');
-            $table->unsignedInteger('count_miss');
-
-            // canonical event time (when score was created/submitted)
-            $table->dateTime('submission_date')->index();
+            $table->json('mods')->default(json_encode([]));
+            $table->unsignedInteger('great')->default(0);
+            $table->unsignedInteger('ok')->default(0);
+            $table->unsignedInteger('meh')->default(0);
+            $table->unsignedInteger('miss')->default(0);
+            $table->unsignedInteger('ignore_hit')->default(0);
+            $table->unsignedInteger('ignore_miss')->default(0);
+            $table->unsignedInteger('large_tick_hit')->default(0);
+            $table->unsignedInteger('slider_tail_hit')->default(0);
 
             $table->timestamps();
 
