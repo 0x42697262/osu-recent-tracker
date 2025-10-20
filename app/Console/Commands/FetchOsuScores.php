@@ -122,6 +122,9 @@ class FetchOsuScores extends Command
 
             if (empty($scores))
             {
+                $player->update([
+                    'last_tracked_update' => now(),
+                ]);
                 $msg = $username . ' has no recent plays.';
                 $this->info($msg);
                 Log::info($msg);
