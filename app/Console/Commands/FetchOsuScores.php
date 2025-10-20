@@ -166,7 +166,6 @@ class FetchOsuScores extends Command
                         'count_circles' => $beatmapData['count_circles'],
                         'count_sliders' => $beatmapData['count_sliders'],
                         'count_spinners' => $beatmapData['count_spinners'],
-                        'last_updated' => Carbon::parse($beatmapData['last_updated'])->format('Y-m-d H:i:s'),
                     ];
 
                 if (!$existingBeatmap)
@@ -191,8 +190,8 @@ class FetchOsuScores extends Command
                 }
                 else
                 {
-                    $beatmapLastUpdated = Carbon::parse($existingBeatmap->last_updated);
-                    if ($beatmapLastUpdated->gt(Carbon::parse($beatmapData['last_updated'])))
+                    $checksum = $existingBeatmap->checksum;
+                    if ($checksum !== $beatmapData['checksum'])
                     {
                         Beatmap->update($beatmapDataQuery);
                     }
