@@ -32,7 +32,6 @@ return new class extends Migration
             $table->unsignedBigInteger('beatmapset_id');
             $table->decimal('difficulty_rating', 5, 2);
             $table->unsignedBigInteger('user_id');
-            $table->unsignedInteger('total_length');
             $table->string('version', 128);
             $table->string('checksum', 32);
 
@@ -43,6 +42,7 @@ return new class extends Migration
             $table->decimal('drain', 3, 1);
             $table->decimal('accuracy', 3, 1);
             $table->unsignedInteger('hit_length');
+            $table->unsignedInteger('total_length');
             $table->unsignedInteger('count_circles');
             $table->unsignedInteger('count_sliders');
             $table->unsignedInteger('count_spinners');
