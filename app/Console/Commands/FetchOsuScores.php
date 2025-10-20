@@ -34,9 +34,34 @@ class FetchOsuScores extends Command
     /**
      * Execute the console command.
      */
+
+    /**
+     * Number of players to update per batch.
+     *
+     * @var integer
+     */
+    protected $batchSize = 120;
+
+    /**
+     * Delay time before updating next player
+     *
+     * @var decimal
+     */
+    protected $delaySeconds = 0.5;
+
+    /**
+     * Time in minutes of player last update marked for update
+     *
+     * @var integer
+     */
+    protected $updateWindowMinutes = 20;
+
     public function handle()
     {
-        $players = Player::all();
+        $players = Player::where('last_tracked_update', '<', now()->subMinutess($this->updateWindowMinutes))
+                        ->orderBy('last_tracked_update', 'asc')
+                        ->limit($this->batchSize)
+                        ->get();
 
         $this->info('Fetching latest osu! scores for ' . count($players) . ' players...');
         Log::info('Started osu:fetch-osu-scores command for '. count($players) . ' players');
@@ -204,6 +229,8 @@ class FetchOsuScores extends Command
             $success = 'Fetched ' . $count . ' scores for ' . $username ;
             $this->info($success);
             Log::info($success);
+
+            sleep($this->delaySeconds);
         }
     }
 }
