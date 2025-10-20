@@ -184,14 +184,14 @@ class FetchOsuScores extends Command
                     'passed'                => $score['passed'],
                     'has_replay'            => $score['has_replay'],
 
-                    'great'                 => $score['great'] ?? 0,
-                    'ok'                    => $score['ok'] ?? 0,
-                    'meh'                   => $score['meh'] ?? 0,
-                    'miss'                  => $score['miss'] ?? 0,
-                    'ignore_hit'            => $score['ignore_hit'] ?? 0,
-                    'ignore_miss'           => $score['ignore_miss'] ?? 0,
-                    'large_tick_hit'        => $score['large_tick_hit'] ?? 0,
-                    'slider_tail_hit'       => $score['slider_tail_hit'] ?? 0,
+                    'great'                 => $score['statistics']['great'] ?? 0,
+                    'ok'                    => $score['statistics']['ok'] ?? 0,
+                    'meh'                   => $score['statistics']['meh'] ?? 0,
+                    'miss'                  => $score['statistics']['miss'] ?? 0,
+                    'ignore_hit'            => $score['statistics']['ignore_hit'] ?? 0,
+                    'ignore_miss'           => $score['statistics']['ignore_miss'] ?? 0,
+                    'large_tick_hit'        => $score['statistics']['large_tick_hit'] ?? 0,
+                    'slider_tail_hit'       => $score['statistics']['slider_tail_hit'] ?? 0,
                 ]);
 
                 $count++;
