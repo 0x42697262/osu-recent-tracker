@@ -132,7 +132,7 @@ class FetchOsuScores extends Command
                 ]);
                 $msg = $username . ' has no recent plays.';
                 $this->info($msg);
-                Log::info($msg);
+                Log::debug($msg);
 
                 continue;
             }
@@ -236,7 +236,7 @@ class FetchOsuScores extends Command
 
             $success = 'Fetched ' . $count . ' scores for ' . $username ;
             $this->info($success);
-            Log::info($success);
+            Log::debug($success);
 
             usleep($this->delaySeconds * 1_000_000);
         }
