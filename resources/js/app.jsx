@@ -57,11 +57,12 @@ function Search({ setProfile, setHistory }) {
 
 function Header({ children }) {
     return (
-        <header className="h-16 bg-white border-b border-gray-200 flex items-center px-4">
+        <header
+            className="h-16  flex items-center px-4"
+            style={{ backgroundColor: "#ac396d" }}
+        >
             <div className="flex-1">
-                <div className="text-sm font-mono text-gray-600">
-                    osu!pretend
-                </div>
+                <div className="text-sm font-mono text-white">osu!pretend</div>
             </div>
 
             <nav className="flex items-center space-x-3">{children}</nav>
@@ -76,7 +77,8 @@ function ProfileSection({ profile }) {
 
     return (
         <aside
-            className="basis-[30%] max-w-[40%] bg-white border-r border-gray-200 p-6"
+            className="basis-[30%] max-w-[40%] p-6 text-white"
+            style={{ backgroundColor: "#382e32" }}
             aria-label="Profile and stats"
         >
             <div className="space-y-4">
@@ -105,14 +107,17 @@ function HistoricalStats({ History }) {
     }));
     return (
         <section className="flex-1 p-6">
-            <div className="bg-white rounded-md shadow-sm h-full flex flex-col border border-gray-200">
+            <div
+                className="rounded-md shadow-sm h-full flex flex-col border"
+                style={{ backgroundColor: "#382e32" }}
+            >
                 {/* Header for historical panel */}
-                <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+                <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between text-white">
                     <div>
-                        <h2 className="text-sm font-semibold text-gray-800">
+                        <h2 className="text-sm font-semibold">
                             Historical Scores
                         </h2>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-gray-400">
                             Most recent 25 scores
                         </p>
                     </div>
@@ -124,7 +129,8 @@ function HistoricalStats({ History }) {
                         {scores.map((s) => (
                             <li
                                 key={s.id}
-                                className="p-3 bg-gray-50 border border-gray-100 rounded-md"
+                                className="p-3 rounded-md text-white"
+                                style={{ backgroundColor: "#46393f" }}
                             >
                                 <div>
                                     <div className="flex items-center justify-between">
@@ -152,10 +158,10 @@ function HistoricalStats({ History }) {
                                         <div className="text-sm font-medium">
                                             819,411
                                         </div>
-                                        <div className="text-xs text-gray-500">
+                                        <div className="text-xs text-gray-400">
                                             PP 111.79 (395.97 @ 99.51% FC)
                                         </div>
-                                        <div className="text-xs text-gray-500">
+                                        <div className="text-xs text-gray-400">
                                             Submitted on 9 March 2023 19:38
                                         </div>
                                     </div>
@@ -167,7 +173,7 @@ function HistoricalStats({ History }) {
                                                 <div className="text-sm font-medium">
                                                     Accuracy
                                                 </div>
-                                                <div className="text-xs text-gray-700">
+                                                <div className="text-xs">
                                                     100.00%
                                                 </div>
                                             </div>
@@ -176,7 +182,7 @@ function HistoricalStats({ History }) {
                                                 <div className="text-sm font-medium">
                                                     Max Combo
                                                 </div>
-                                                <div className="text-xs text-gray-700">
+                                                <div className="text-xs">
                                                     12,482x
                                                 </div>
                                             </div>
@@ -185,7 +191,7 @@ function HistoricalStats({ History }) {
                                                 <div className="text-sm font-medium">
                                                     pp
                                                 </div>
-                                                <div className="text-xs text-gray-700">
+                                                <div className="text-xs">
                                                     2686.43
                                                 </div>
                                             </div>
@@ -197,7 +203,7 @@ function HistoricalStats({ History }) {
                                                 <div className="text-sm font-medium">
                                                     great
                                                 </div>
-                                                <div className="text-xs text-gray-700">
+                                                <div className="text-xs">
                                                     {s.hits?.great ?? 0}
                                                 </div>
                                             </div>
@@ -206,7 +212,7 @@ function HistoricalStats({ History }) {
                                                 <div className="text-sm font-medium">
                                                     ok
                                                 </div>
-                                                <div className="text-xs text-gray-700">
+                                                <div className="text-xs">
                                                     {s.hits?.ok ?? 0}
                                                 </div>
                                             </div>
@@ -215,7 +221,7 @@ function HistoricalStats({ History }) {
                                                 <div className="text-sm font-medium">
                                                     meh
                                                 </div>
-                                                <div className="text-xs text-gray-700">
+                                                <div className="text-xs">
                                                     {s.hits?.meh ?? 0}
                                                 </div>
                                             </div>
@@ -224,7 +230,7 @@ function HistoricalStats({ History }) {
                                                 <div className="text-sm font-medium">
                                                     Miss
                                                 </div>
-                                                <div className="text-xs text-gray-700">
+                                                <div className="text-xs">
                                                     {s.hits?.miss ?? 0}
                                                 </div>
                                             </div>
@@ -236,7 +242,7 @@ function HistoricalStats({ History }) {
                                                 <div className="text-sm font-medium">
                                                     slider tick
                                                 </div>
-                                                <div className="text-xs text-gray-700">
+                                                <div className="text-xs">
                                                     <span>
                                                         {s.slider?.tick ?? 0}
                                                     </span>
@@ -251,7 +257,7 @@ function HistoricalStats({ History }) {
                                                 <div className="text-sm font-medium">
                                                     slider end
                                                 </div>
-                                                <div className="text-xs text-gray-700">
+                                                <div className="text-xs">
                                                     <span>
                                                         {s.slider?.end ?? 0}
                                                     </span>
@@ -269,7 +275,7 @@ function HistoricalStats({ History }) {
                                                 <div className="text-sm font-medium">
                                                     CS
                                                 </div>
-                                                <div className="text-xs text-gray-700">
+                                                <div className="text-xs ">
                                                     4
                                                 </div>
                                             </div>
@@ -278,7 +284,7 @@ function HistoricalStats({ History }) {
                                                 <div className="text-sm font-medium">
                                                     AR
                                                 </div>
-                                                <div className="text-xs text-gray-700">
+                                                <div className="text-xs ">
                                                     6
                                                 </div>
                                             </div>
@@ -287,7 +293,7 @@ function HistoricalStats({ History }) {
                                                 <div className="text-sm font-medium">
                                                     OD
                                                 </div>
-                                                <div className="text-xs text-gray-700">
+                                                <div className="text-xs ">
                                                     10
                                                 </div>
                                             </div>
@@ -295,7 +301,7 @@ function HistoricalStats({ History }) {
                                                 <div className="text-sm font-medium">
                                                     HP
                                                 </div>
-                                                <div className="text-xs text-gray-700">
+                                                <div className="text-xs ">
                                                     4
                                                 </div>
                                             </div>
@@ -305,7 +311,7 @@ function HistoricalStats({ History }) {
                                                 <div className="text-sm font-medium">
                                                     BPM
                                                 </div>
-                                                <div className="text-xs text-gray-700">
+                                                <div className="text-xs ">
                                                     240
                                                 </div>
                                             </div>
@@ -314,7 +320,7 @@ function HistoricalStats({ History }) {
                                                 <div className="text-sm font-medium">
                                                     LENGTH
                                                 </div>
-                                                <div className="text-xs text-gray-700">
+                                                <div className="text-xs ">
                                                     44:42
                                                 </div>
                                             </div>
@@ -336,7 +342,10 @@ function App() {
     const [history, setHistory] = useState([]);
 
     return (
-        <div className="min-h-screen bg-gray-50 text-gray-900">
+        <div
+            className="min-h-screen  text-gray-900"
+            style={{ backgroundColor: "#1c1719" }}
+        >
             <Header>
                 <Search setProfile={setProfile} setHistory={setHistory} />
             </Header>
