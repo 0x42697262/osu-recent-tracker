@@ -185,7 +185,7 @@ class FetchOsuScores extends Command
                         'title_unicode' => $beatmapsetData['title_unicode'],
                         'user_id' => $beatmapsetData['user_id'],
                     ]);
-                    Log::info('Added new song ' . $beatmapsetData['title'] . ' with ID: ' . $beatmapsetId);
+                    Log::info('Added new song: ' . $beatmapsetId);
                     Beatmap::create($beatmapDataQuery);
                 }
                 else
