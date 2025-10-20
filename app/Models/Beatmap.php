@@ -23,6 +23,7 @@ class Beatmap extends Model
         'total_length',
         'version',
         'checksum',
+
         'bpm',
         'cs',
         'ar',
@@ -32,7 +33,6 @@ class Beatmap extends Model
         'count_circles',
         'count_sliders',
         'count_spinners',
-        'last_updated',
     ];
 
     public $timestamps = true;

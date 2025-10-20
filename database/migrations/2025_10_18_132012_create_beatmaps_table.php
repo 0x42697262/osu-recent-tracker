@@ -47,7 +47,6 @@ return new class extends Migration
             $table->unsignedInteger('count_sliders');
             $table->unsignedInteger('count_spinners');
 
-            $table->timestamp('last_updated');
             $table->timestamps();
 
 
