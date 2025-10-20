@@ -48,7 +48,7 @@ return new class extends Migration
 
             // uniqueness and indexes
             $table->unique('record_hash', 'ux_scores_record_hash');
-            $table->index(['user_id', 'submission_date'], 'idx_user_submissiondate');
+            $table->index(['user_id', 'ended_at'], 'idx_user_endedat');
 
             $table
                 ->foreign('user_id')
