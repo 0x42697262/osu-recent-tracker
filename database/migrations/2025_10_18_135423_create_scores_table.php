@@ -35,6 +35,11 @@ return new class extends Migration
             $table->boolean('has_replay')->default(false);
 
             // statistics
+            $table->unsignedInteger('legacy_combo_increase')->default(0);
+            $table->unsignedInteger('max_great')->default(0);
+            $table->unsignedInteger('max_ignore_hit')->default(0);
+            $table->unsignedInteger('max_large_tick_hit')->default(0);
+            $table->unsignedInteger('max_slider_tail_hit')->default(0);
             $table->unsignedInteger('great')->default(0);
             $table->unsignedInteger('ok')->default(0);
             $table->unsignedInteger('meh')->default(0);

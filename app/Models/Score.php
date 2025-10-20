@@ -34,6 +34,11 @@ class Score extends Model
         'passed',
         'has_replay',
 
+        'legacy_combo_increase',
+        'max_great',
+        'max_ignore_hit',
+        'max_large_tick_hit',
+        'max_slider_tail_hit',
         'great',
         'ok',
         'meh',
