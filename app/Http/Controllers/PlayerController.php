@@ -10,9 +10,14 @@ use App\Models\Player;
 
 class PlayerController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $players = Player::all();
-        return response()->json($players);
+        $offset = (int) $request->query('offset', 0);
+
+        $players = Player::offset($offset)
+            ->limit(100)
+            ->get();
+
+        return PlayerResource::collection($players)->response();
     }
 }

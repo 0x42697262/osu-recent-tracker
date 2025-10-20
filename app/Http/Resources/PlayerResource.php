@@ -17,7 +17,6 @@ class PlayerResource extends JsonResource
         return [
             'id'        => $this->id,
             'username'  => $this->username,
-            'history'   => ScoreResource::collection($this->whenLoaded('scores')),
         ];
     }
 }
