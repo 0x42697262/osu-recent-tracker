@@ -29,12 +29,12 @@ return new class extends Migration
 
             // identifiers
             $table->string('rank', 3);
+            $table->json('mods')->default(json_encode([]));
             $table->boolean('is_perfect_combo')->default(false);
             $table->boolean('passed')->default(false);
             $table->boolean('has_replay')->default(false);
 
             // statistics
-            $table->json('mods')->default(json_encode([]));
             $table->unsignedInteger('great')->default(0);
             $table->unsignedInteger('ok')->default(0);
             $table->unsignedInteger('meh')->default(0);
