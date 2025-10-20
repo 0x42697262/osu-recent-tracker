@@ -17,7 +17,7 @@ return new class extends Migration
             $table->binary('record_hash');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('beatmap_id');
-            $table->dateTime('ended_at')->index();
+            $table->dateTime('ended_at');
 
             // score
             $table->decimal('pp', 8, 3)->nullable();
@@ -48,6 +48,8 @@ return new class extends Migration
 
             // uniqueness and indexes
             $table->unique('record_hash', 'ux_scores_record_hash');
+            $table->index('user_id', 'idx_user_id');
+            $table->index('ended_at', 'idx_ended_at');
             $table->index(['user_id', 'ended_at'], 'idx_user_endedat');
 
             $table
