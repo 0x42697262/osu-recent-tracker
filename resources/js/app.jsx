@@ -98,13 +98,13 @@ function ProfileSection({ profile }) {
     );
 }
 
-function HistoricalStats({ History }) {
-    // generate 100 scores (static for the exam)
-    const scores = Array.from({ length: 25 }, (_, i) => ({
-        id: 100 - i,
-        value: Math.floor(Math.random() * 1000), // just a placeholder number
-        date: `2025-10-${String(1 + (i % 30)).padStart(2, "0")}`,
-    }));
+function HistoricalStats({ history }) {
+    function formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs.toString().padStart(2, "0")}`;
+    }
+
     return (
         <section className="flex-1 p-6">
             <div
@@ -126,43 +126,50 @@ function HistoricalStats({ History }) {
 
                 <div>
                     <ul className="p-4 space-y-2">
-                        {scores.map((s) => (
+                        {history.map((score, index) => (
                             <li
-                                key={s.id}
-                                className="p-3 rounded-md text-white"
-                                style={{ backgroundColor: "#46393f" }}
+                                key={index}
+                                className="p-3 rounded-md text-white bg-cover bg-center"
+                                style={{
+                                    backgroundImage: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(https://assets.ppy.sh/beatmaps/${score.beatmap.beatmapset_id}/covers/slimcover.jpg)`,
+                                }}
                             >
                                 <div>
                                     <div className="flex items-center justify-between">
                                         <div className="flex-1">
                                             <div className="mb-2 font-semibold">
-                                                Rubik's Cube by Nanahoshi
-                                                Kangengakudan
+                                                {score["beatmap"]["title"]} by{" "}
+                                                {score.beatmap.artist}
                                             </div>
                                         </div>
 
                                         <div className="w-[10%] text-right text-big font-bold">
-                                            11.31★
+                                            {score.beatmap.difficulty_rating}★
                                         </div>
                                     </div>
 
                                     <div className="text-sm font-medium">
-                                        43,252,003,274,489,856,000 mapped by
-                                        squishyguppy
+                                        {score.beatmap.version} mapped by{" "}
+                                        {score.beatmap.creator}
                                     </div>
                                 </div>
-
                                 <div className="flex items-center justify-between">
-                                    <div className="mb-2 font-bold">S</div>
+                                    <div className="mb-2 font-bold">
+                                        {score.rank}
+                                    </div>
                                     <div>
                                         <div className="text-sm font-medium">
-                                            819,411
+                                            {score.total_score.toLocaleString(
+                                                "en-US",
+                                            )}
                                         </div>
                                         <div className="text-xs text-gray-400">
-                                            PP 111.79 (395.97 @ 99.51% FC)
+                                            {score.classic_total_score.toLocaleString(
+                                                "en-US",
+                                            ) ?? "-"}
                                         </div>
                                         <div className="text-xs text-gray-400">
-                                            Submitted on 9 March 2023 19:38
+                                            Submitted on {score.ended_at}
                                         </div>
                                     </div>
 
@@ -170,29 +177,32 @@ function HistoricalStats({ History }) {
                                         {/* Row 1: Accuracy / Max Combo / pp */}
                                         <div className="flex gap-4">
                                             <div className="flex-1 whitespace-nowrap text-center">
-                                                <div className="text-sm font-medium">
+                                                <div className="text-sm font-medium uppercase">
                                                     Accuracy
                                                 </div>
                                                 <div className="text-xs">
-                                                    100.00%
+                                                    {(
+                                                        score.accuracy * 100
+                                                    ).toFixed(2)}
+                                                    %
                                                 </div>
                                             </div>
 
                                             <div className="flex-1 whitespace-nowrap text-center">
-                                                <div className="text-sm font-medium">
+                                                <div className="text-sm font-medium uppercase">
                                                     Max Combo
                                                 </div>
                                                 <div className="text-xs">
-                                                    12,482x
+                                                    {score.max_combo}x
                                                 </div>
                                             </div>
 
                                             <div className="flex-1  whitespace-nowrap text-center">
-                                                <div className="text-sm font-medium">
+                                                <div className="text-sm font-medium uppercase">
                                                     pp
                                                 </div>
                                                 <div className="text-xs">
-                                                    2686.43
+                                                    {score.pp ?? "-"}
                                                 </div>
                                             </div>
                                         </div>
@@ -200,38 +210,38 @@ function HistoricalStats({ History }) {
                                         {/* Row 2: great / ok / meh / Miss */}
                                         <div className="flex gap-4 mt-2">
                                             <div className="flex-1 whitespace-nowrap text-center">
-                                                <div className="text-sm font-medium">
+                                                <div className="text-sm font-medium uppercase">
                                                     great
                                                 </div>
                                                 <div className="text-xs">
-                                                    {s.hits?.great ?? 0}
+                                                    {score.statistics.great}
                                                 </div>
                                             </div>
 
                                             <div className="flex-1 whitespace-nowrap text-center">
-                                                <div className="text-sm font-medium">
+                                                <div className="text-sm font-medium uppercase">
                                                     ok
                                                 </div>
                                                 <div className="text-xs">
-                                                    {s.hits?.ok ?? 0}
+                                                    {score.statistics.ok}
                                                 </div>
                                             </div>
 
                                             <div className="flex-1 whitespace-nowrap text-center">
-                                                <div className="text-sm font-medium">
+                                                <div className="text-sm font-medium uppercase">
                                                     meh
                                                 </div>
                                                 <div className="text-xs">
-                                                    {s.hits?.meh ?? 0}
+                                                    {score.statistics.meh}
                                                 </div>
                                             </div>
 
                                             <div className="flex-1 whitespace-nowrap text-center">
-                                                <div className="text-sm font-medium">
+                                                <div className="text-sm font-medium uppercase">
                                                     Miss
                                                 </div>
                                                 <div className="text-xs">
-                                                    {s.hits?.miss ?? 0}
+                                                    {score.statistics.miss}
                                                 </div>
                                             </div>
                                         </div>
@@ -239,30 +249,41 @@ function HistoricalStats({ History }) {
                                         {/* Row 3: slider tick / slider end */}
                                         <div className="flex gap-4 mt-2">
                                             <div className="flex-1 whitespace-nowrap text-center">
-                                                <div className="text-sm font-medium">
-                                                    slider tick
+                                                <div className="text-sm font-medium uppercase">
+                                                    SLIDER TICK
                                                 </div>
                                                 <div className="text-xs">
                                                     <span>
-                                                        {s.slider?.tick ?? 0}
+                                                        {score.statistics
+                                                            .large_tick_hit ??
+                                                            "-"}
                                                     </span>
                                                     <span className="text-xs text-gray-400">
                                                         /
-                                                        {s.slider?.tickMax ?? 0}
+                                                        {score
+                                                            .maximum_statistics
+                                                            .large_tick_hit ??
+                                                            "-"}
                                                     </span>
                                                 </div>
                                             </div>
 
                                             <div className="flex-1 whitespace-nowrap text-center">
-                                                <div className="text-sm font-medium">
-                                                    slider end
+                                                <div className="text-sm font-medium uppercase">
+                                                    SLIDER END
                                                 </div>
                                                 <div className="text-xs">
                                                     <span>
-                                                        {s.slider?.end ?? 0}
+                                                        {score.statistics
+                                                            .slider_tail_hit ??
+                                                            "-"}
                                                     </span>
                                                     <span className="text-xs text-gray-400">
-                                                        /{s.slider?.endMax ?? 0}
+                                                        /
+                                                        {score
+                                                            .maximum_statistics
+                                                            .slider_tail_hit ??
+                                                            "-"}
                                                     </span>
                                                 </div>
                                             </div>
@@ -272,61 +293,70 @@ function HistoricalStats({ History }) {
                                     <div className="mt-3">
                                         <div className="flex gap-4 mt-2">
                                             <div className="flex-1 whitespace-nowrap text-center">
-                                                <div className="text-sm font-medium">
+                                                <div className="text-sm font-medium uppercase">
                                                     CS
                                                 </div>
                                                 <div className="text-xs ">
-                                                    4
+                                                    {score.beatmap.cs}
                                                 </div>
                                             </div>
 
                                             <div className="flex-1 whitespace-nowrap text-center">
-                                                <div className="text-sm font-medium">
+                                                <div className="text-sm font-medium uppercase">
                                                     AR
                                                 </div>
                                                 <div className="text-xs ">
-                                                    6
+                                                    {score.beatmap.ar}
                                                 </div>
                                             </div>
 
                                             <div className="flex-1 whitespace-nowrap text-center">
-                                                <div className="text-sm font-medium">
+                                                <div className="text-sm font-medium uppercase">
                                                     OD
                                                 </div>
                                                 <div className="text-xs ">
-                                                    10
+                                                    {score.beatmap.accuracy}
                                                 </div>
                                             </div>
                                             <div className="flex-1 whitespace-nowrap text-center">
-                                                <div className="text-sm font-medium">
+                                                <div className="text-sm font-medium uppercase">
                                                     HP
                                                 </div>
                                                 <div className="text-xs ">
-                                                    4
+                                                    {score.beatmap.drain}
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="flex gap-4 mt-2">
                                             <div className="flex-1 whitespace-nowrap text-center">
-                                                <div className="text-sm font-medium">
+                                                <div className="text-sm font-medium uppercase">
                                                     BPM
                                                 </div>
                                                 <div className="text-xs ">
-                                                    240
+                                                    {Number.isInteger(
+                                                        score.beatmap.bpm,
+                                                    )
+                                                        ? score.beatmap.bpm
+                                                        : parseFloat(
+                                                              score.beatmap.bpm,
+                                                          ).toFixed(1)}
                                                 </div>
                                             </div>
 
                                             <div className="flex-1 whitespace-nowrap text-center">
-                                                <div className="text-sm font-medium">
+                                                <div className="text-sm font-medium uppercase">
                                                     LENGTH
                                                 </div>
                                                 <div className="text-xs ">
-                                                    44:42
+                                                    {formatTime(
+                                                        score.beatmap
+                                                            .hit_length,
+                                                    )}
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="text-sm">#{s.id}</div>
+                                    <div className="text-sm">#{index + 1}</div>
                                 </div>
                             </li>
                         ))}
@@ -351,7 +381,7 @@ function App() {
             </Header>
             <main className="flex" style={{ minHeight: "100vh" }}>
                 <ProfileSection profile={profile} />
-                <HistoricalStats History={History} />
+                <HistoricalStats history={history} />
             </main>
         </div>
     );
