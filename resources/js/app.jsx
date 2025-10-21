@@ -391,6 +391,43 @@ function HistoricalStats({ history }) {
                                                 </div>
                                             </div>
                                         </div>
+                                        <div className="flex gap-4 mt-2">
+                                            <div className="flex-1 whitespace-nowrap text-center">
+                                                <div className="text-sm font-medium uppercase">
+                                                    circles
+                                                </div>
+                                                <div className="text-xs ">
+                                                    {
+                                                        score.beatmap
+                                                            .count_circles
+                                                    }
+                                                </div>
+                                            </div>
+
+                                            <div className="flex-1 whitespace-nowrap text-center">
+                                                <div className="text-sm font-medium uppercase">
+                                                    sliders
+                                                </div>
+                                                <div className="text-xs ">
+                                                    {
+                                                        score.beatmap
+                                                            .count_sliders
+                                                    }
+                                                </div>
+                                            </div>
+
+                                            <div className="flex-1 whitespace-nowrap text-center">
+                                                <div className="text-sm font-medium uppercase">
+                                                    spinners
+                                                </div>
+                                                <div className="text-xs ">
+                                                    {
+                                                        score.beatmap
+                                                            .count_spinners
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div className="text-sm">#{index + 1}</div>
                                 </div>
