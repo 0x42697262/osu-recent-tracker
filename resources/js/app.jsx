@@ -386,7 +386,7 @@ function HistoricalStats({ history }) {
                                                 <div className="text-xs ">
                                                     {formatTime(
                                                         score.beatmap
-                                                            .hit_length,
+                                                            .total_length,
                                                     )}
                                                 </div>
                                             </div>
