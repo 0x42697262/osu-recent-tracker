@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use App\Helpers\OsuHelpers;
 use App\Models\Beatmap;
 use App\Models\Beatmapset;
+use App\Models\OsuApiToken;
 use App\Models\Player;
 use App\Models\Score;
 
@@ -58,6 +59,34 @@ class FetchOsuScores extends Command
 
     public function handle()
     {
+
+        if (!OsuApiToken::isValid())
+        {
+            $auth_resp = Http::asForm()->post('https://osu.ppy.sh/oauth/token', [
+                'client_id'     => env('OSU_API_V2_CLIENT_ID'),
+                'client_secret' => env('OSU_API_V2_CLIENT_SECRET'),
+                'grant_type'    => 'client_credentials',
+                'scope'         => 'public',
+            ]);
+            if (!$auth_resp->ok()) {
+                $error = "Error getting access token from osu!api";
+                $this->error($error);
+                Log::error($error);
+
+                return Command::FAILURE;
+            } else {
+                $data = $auth_resp->json();
+                OsuApiToken::where('name', 'osu_api_v2')->delete();
+                OsuApiToken::create([
+                    'name'          => 'osu_api_v2',
+                    'access_token'  => $data['access_token'],
+                    'refresh_token' => null,
+                    'expires_at'    => Carbon::now()->addSeconds($data['expires_in'] / 2),
+                    'token_type'    => $data['token_type'],
+                ]);
+            }
+        }
+
         $players = Player::where('last_tracked_update', '<', now()->subMinutess($this->updateWindowMinutes))
                         ->orderBy('last_tracked_update', 'asc')
                         ->limit($this->batchSize)
@@ -78,11 +107,13 @@ class FetchOsuScores extends Command
         */
         $limit = 100;
 
+        $access_token = OsuApiToken::where('name', 'osu_api_v2')->first()->access_token;
+
         // Check for authentication so that we don't waste peppy's cpu
         $auth_resp = Http::withHeaders([
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
-        ])->withToken(env('OSU_API_V2_ACCESS_TOKEN'))->get("https://osu.ppy.sh/api/v2/");
+        ])->withToken($access_token)->get("https://osu.ppy.sh/api/v2/");
 
         $json = $auth_resp->json();
 
@@ -106,7 +137,7 @@ class FetchOsuScores extends Command
                 'Accept' => 'application/json',
                 'Accept-Encoding' => 'gzip, deflate, br', // no need to worry about 300kib json response, compresesd to ~16kib
                 'X-API-Version' => env('X_API_VERSION', '20251019'),
-            ])->withToken(env('OSU_API_V2_ACCESS_TOKEN'))
+            ])->withToken($access_token)
             ->get("https://osu.ppy.sh/api/v2/users/{$user_id}/scores/recent", [
                 'legacy_only' => 0,
                 'include_fails' => 1,
