@@ -133,7 +133,7 @@ function HistoricalStats({ history }) {
                                 key={index}
                                 className="p-3 rounded-md text-white bg-cover bg-center"
                                 style={{
-                                    backgroundImage: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(https://assets.ppy.sh/beatmaps/${score.beatmap.beatmapset_id}/covers/slimcover.jpg)`,
+                                    backgroundImage: `linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url(https://assets.ppy.sh/beatmaps/${score.beatmap.beatmapset_id}/covers/slimcover.jpg)`,
                                 }}
                             >
                                 <div>
@@ -202,7 +202,22 @@ function HistoricalStats({ history }) {
                                                     Max Combo
                                                 </div>
                                                 <div className="text-xs">
-                                                    {score.max_combo}x
+                                                    {score.max_combo}x/
+                                                    {score.maximum_statistics
+                                                        .great +
+                                                        (score
+                                                            .maximum_statistics
+                                                            .large_tick_hit ??
+                                                            0) +
+                                                        (score
+                                                            .maximum_statistics
+                                                            .slider_tail_hit ??
+                                                            0) +
+                                                        (score
+                                                            .maximum_statistics
+                                                            .legacy_combo_increase ??
+                                                            0)}
+                                                    x
                                                 </div>
                                             </div>
 
@@ -223,7 +238,8 @@ function HistoricalStats({ history }) {
                                                     great
                                                 </div>
                                                 <div className="text-xs">
-                                                    {score.statistics.great}
+                                                    {score.statistics.great ??
+                                                        0}
                                                 </div>
                                             </div>
 
@@ -232,7 +248,7 @@ function HistoricalStats({ history }) {
                                                     ok
                                                 </div>
                                                 <div className="text-xs">
-                                                    {score.statistics.ok}
+                                                    {score.statistics.ok ?? 0}
                                                 </div>
                                             </div>
 
@@ -241,7 +257,7 @@ function HistoricalStats({ history }) {
                                                     meh
                                                 </div>
                                                 <div className="text-xs">
-                                                    {score.statistics.meh}
+                                                    {score.statistics.meh ?? 0}
                                                 </div>
                                             </div>
 
@@ -250,7 +266,7 @@ function HistoricalStats({ history }) {
                                                     Miss
                                                 </div>
                                                 <div className="text-xs">
-                                                    {score.statistics.miss}
+                                                    {score.statistics.miss ?? 0}
                                                 </div>
                                             </div>
                                         </div>
