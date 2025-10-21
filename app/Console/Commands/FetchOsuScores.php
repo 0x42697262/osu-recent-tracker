@@ -247,6 +247,12 @@ class FetchOsuScores extends Command
                     'passed'                => $score['passed'],
                     'has_replay'            => $score['has_replay'],
 
+                    'legacy_combo_increase' => $score['maximum_statistics']['legacy_combo_increase'] ?? 0,
+                    'max_great'             => $score['maximum_statistics']['great'] ?? 0,
+                    'max_ignore_hit'        => $score['maximum_statistics']['ignore_hit'] ?? 0,
+                    'max_large_tick_hit'    => $score['maximum_statistics']['large_tick_hit'] ?? 0,
+                    'max_slider_tail_hit'   => $score['maximum_statistics']['slider_tail_hit'] ?? 0,
+
                     'great'                 => $score['statistics']['great'] ?? 0,
                     'ok'                    => $score['statistics']['ok'] ?? 0,
                     'meh'                   => $score['statistics']['meh'] ?? 0,

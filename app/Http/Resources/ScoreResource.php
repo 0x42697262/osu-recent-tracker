@@ -39,10 +39,10 @@ class ScoreResource extends JsonResource
             ])->reject(fn ($value) => $value == 0)->all(),
             'maximum_statistics'    => collect([
                 'legacy_combo_increase' => $this->legacy_combo_increase,
-                'great'                 => $this->great,
-                'ignore_hit'            => $this->ignore_hit,
-                'large_tick_hit'        => $this->large_tick_hit,
-                'slider_tail_hit'       => $this->slider_tail_hit,
+                'great'                 => $this->max_great,
+                'ignore_hit'            => $this->max_ignore_hit,
+                'large_tick_hit'        => $this->max_large_tick_hit,
+                'slider_tail_hit'       => $this->max_slider_tail_hit,
             ])->reject(fn ($value) => $value == 0)->all(),
             'beatmap'               => BeatmapResource::make($this->whenLoaded('beatmap')),
         ];
