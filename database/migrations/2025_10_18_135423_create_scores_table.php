@@ -21,7 +21,7 @@ return new class extends Migration
 
             // score
             $table->decimal('pp', 8, 3)->nullable();
-            $table->decimal('accuracy', 18, 16);
+            $table->decimal('accuracy', 8, 6);
             $table->unsignedBigInteger('classic_total_score');
             $table->unsignedBigInteger('total_score');
             $table->unsignedBigInteger('legacy_total_score');
