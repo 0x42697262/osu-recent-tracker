@@ -164,7 +164,7 @@ function HistoricalStats({ history }) {
                                 </div>
                                 <div className="flex items-center justify-between">
                                     <div className="mb-2 font-bold">
-                                        {score.rank}
+                                        {score.passed ? score.rank : "F"}
                                     </div>
                                     <div>
                                         <div className="text-sm font-medium">
