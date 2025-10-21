@@ -121,7 +121,9 @@ function HistoricalStats({ history }) {
                             Most recent 25 scores
                         </p>
                     </div>
-                    <div className="text-xs text-gray-500">Total: 100</div>
+                    <div className="text-xs text-gray-500">
+                        Total: {history.length}
+                    </div>
                 </div>
 
                 <div>
@@ -138,8 +140,15 @@ function HistoricalStats({ history }) {
                                     <div className="flex items-center justify-between">
                                         <div className="flex-1">
                                             <div className="mb-2 font-semibold">
-                                                {score["beatmap"]["title"]} by{" "}
-                                                {score.beatmap.artist}
+                                                <a
+                                                    href={`https://osu.ppy.sh/beatmaps/${score.beatmap.beatmap_id}`}
+                                                    className="text-inherit no-underline"
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    {score.beatmap.title} by{" "}
+                                                    {score.beatmap.artist}
+                                                </a>
                                             </div>
                                         </div>
 
