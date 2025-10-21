@@ -178,7 +178,18 @@ function HistoricalStats({ history }) {
                                             ) ?? "-"}
                                         </div>
                                         <div className="text-xs text-gray-400">
-                                            Submitted on {score.ended_at}
+                                            Submitted on{" "}
+                                            {new Date(
+                                                score.ended_at + "Z",
+                                            ).toLocaleString(undefined, {
+                                                year: "numeric",
+                                                month: "long",
+                                                day: "numeric",
+                                                hour: "numeric",
+                                                minute: "2-digit",
+                                                second: "2-digit",
+                                                hour12: true,
+                                            })}
                                         </div>
                                     </div>
 
