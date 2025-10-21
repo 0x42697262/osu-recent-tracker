@@ -16,7 +16,7 @@ class BeatmapResource extends JsonResource
     {
         $beatmapset = (new BeatmapsetResource($this->beatmapset))->toArray($request);
         $map_details = [
-            'id'                => $this->id,
+            'beatmap_id'        => $this->id,
             'difficulty_rating' => $this->difficulty_rating,
             'version'           => $this->version,
             'bpm'               => $this->bpm,

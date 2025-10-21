@@ -15,6 +15,7 @@ class BeatmapsetResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'beatmapset_id'  => $this->id,
             'artist'         => $this->artist,
             'artist_unicode' => $this->artist_unicode,
             'title'          => $this->title,
